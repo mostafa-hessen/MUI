@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material UI with React - Day 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1976d2',
+                        secondary: '#dc004e',
+                        dark: '#121212',
+                        light: '#f5f5f5'
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #1976d2;
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+        .slide {
+            display: none;
+        }
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .component-example {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-primary text-white py-4 px-6 shadow-lg sticky top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold flex items-center">
+                <i class="fab fa-react mr-2 text-blue-300"></i>
+                Material UI with React
+            </h1>
+            <div class="flex space-x-6">
+                <div class="nav-item" data-target="intro">Introduction</div>
+                <div class="nav-item" data-target="comparison">Comparison</div>
+                <div class="nav-item" data-target="setup">Setup</div>
+                <div class="nav-item" data-target="components">Components</div>
+                <div class="nav-item" data-target="lab">Lab</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Presentation Content -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        
+        <!-- Slide 1: Introduction -->
+        <div id="intro" class="slide active">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <h1 class="text-3xl font-bold text-primary mb-4">Introduction to Material UI</h1>
+                        <p class="text-lg mb-6">Material UI (MUI) is a popular React UI framework that implements Google's Material Design principles.</p>
+                        
+                        <div class="bg-blue-50 p-6 rounded-lg mb-6">
+                            <h2 class="text-xl font-semibold text-primary mb-3">Why Material UI?</h2>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Beautiful, consistent UI components out of the box</li>
+                                <li>Comprehensive component library (80+ components)</li>
+                                <li>Customizable theming system</li>
+                                <li>Excellent documentation and community support</li>
+                                <li>Accessibility built-in</li>
+                                <li>Optimized for React development</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                            <div class="bg-green-50 p-6 rounded-lg">
+                                <h3 class="text-lg font-semibold text-green-700 mb-2">
+                                    <i class="fas fa-check-circle mr-2"></i>Strengths
+                                </h3>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Rich component library</li>
+                                    <li>Strong theming capabilities</li>
+                                    <li>Professional design aesthetics</li>
+                                    <li>Regular updates and maintenance</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-6 rounded-lg">
+                                <h3 class="text-lg font-semibold text-yellow-700 mb-2">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>Considerations
+                                </h3>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Larger bundle size</li>
+                                    <li>Learning curve for customization</li>
+                                    <li>Material Design might not fit all projects</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 flex justify-center">
+                        <div class="bg-gradient-to-br from-primary to-purple-600 text-white rounded-2xl p-8 shadow-2xl transform rotate-3 max-w-md">
+                            <div class="text-center mb-6">
+                                <i class="fab fa-react text-6xl text-blue-300 mb-4"></i>
+                                <h2 class="text-2xl font-bold">Material UI</h2>
+                                <p class="opacity-80">React Component Library</p>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <div class="text-3xl font-bold">80+</div>
+                                    <div class="text-sm">Components</div>
+                                </div>
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <div class="text-3xl font-bold">1.5M+</div>
+                                    <div class="text-sm">Weekly Downloads</div>
+                                </div>
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <div class="text-3xl font-bold">2k+</div>
+                                    <div class="text-sm">Contributors</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Comparison -->
+        <div id="comparison" class="slide">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <h1 class="text-3xl font-bold text-primary mb-6">UI Library Comparison</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="card bg-white border border-blue-200 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fab fa-react text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Material UI</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Complete Material Design implementation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Powerful theming system</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Extensive component library</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-minus text-gray-500 mt-1 mr-2"></i>
+                                <span>Larger bundle size</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white border border-gray-200 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fab fa-bootstrap text-purple-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Bootstrap</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Widely used with extensive resources</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Responsive grid system</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-minus text-gray-500 mt-1 mr-2"></i>
+                                <span>Generic look without customization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-minus text-gray-500 mt-1 mr-2"></i>
+                                <span>Not designed specifically for React</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white border border-gray-200 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fab fa-css3-alt text-green-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Tailwind CSS</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Highly customizable utility-first approach</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>Smaller bundle size with purging</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-minus text-gray-500 mt-1 mr-2"></i>
+                                <span>No pre-built components</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-minus text-gray-500 mt-1 mr-2"></i>
+                                <span>Steeper learning curve</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold mb-4">When to Choose Material UI</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                            <div>
+                                <h3 class="font-semibold">Enterprise Applications</h3>
+                                <p class="text-gray-600">When you need a professional, consistent UI across a large application</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                            <div>
+                                <h3 class="font-semibold">Rapid Prototyping</h3>
+                                <p class="text-gray-600">When you need to build functional prototypes quickly</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                            <div>
+                                <h3 class="font-semibold">Material Design Projects</h3>
+                                <p class="text-gray-600">When your project requires Google's Material Design spec</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                            <div>
+                                <h3 class="font-semibold">Team Collaboration</h3>
+                                <p class="text-gray-600">When working with a team that benefits from standardized components</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Setup -->
+        <div id="setup" class="slide">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <h1 class="text-3xl font-bold text-primary mb-6">Setup and Configuration</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Installation</h2>
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 mb-6 relative">
+                            <button class="copy-btn text-gray-300 bg-gray-700 px-2 py-1 rounded text-sm">
+                                <i class="fas fa-copy mr-1"></i>Copy
+                            </button>
+                            <pre><code>npm install @mui/material @emotion/react @emotion/styled</code></pre>
+                        </div>
+                        
+                        <h2 class="text-xl font-semibold mb-4">Font Setup</h2>
+                        <p class="mb-4">Add to your HTML head:</p>
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 mb-6">
+                            <pre><code>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/&gt;
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/&gt;</code></pre>
+                        </div>
+                        
+                        <h2 class="text-xl font-semibold mb-4">Basic Setup</h2>
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4">
+                            <pre><code>// App.js
+import React from 'react';
+import { Button } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme();
+
+function App() {
+  return (
+    &lt;ThemeProvider theme={theme}&gt;
+      &lt;Button variant="contained"&gt;Hello World&lt;/Button&gt;
+    &lt;/ThemeProvider&gt;
+  );
+}
+
+export default App;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Project Structure</h2>
+                        <div class="bg-gray-50 p-6 rounded-lg mb-6">
+                            <pre class="text-sm">my-app/
+├── node_modules/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Header.js
+│   │   │   ├── Sidebar.js
+│   │   ├── ui/
+│   │   │   ├── CustomButton.js
+│   │   │   ├── CustomCard.js
+│   ├── theme/
+│   │   ├── theme.js
+│   ├── App.js
+│   ├── index.js
+├── package.json</pre>
+                        </div>
+                        
+                        <h2 class="text-xl font-semibold mb-4">Theme Configuration</h2>
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4">
+                            <pre><code>// theme.js
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 500,
+    },
+  },
+});
+
+export default theme;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Core Components -->
+        <div id="components" class="slide">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <h1 class="text-3xl font-bold text-primary mb-6">Core Components</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Layout Components -->
+                    <div class="component-example">
+                        <h2 class="text-xl font-semibold text-primary mb-4">Layout Components</h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">Container</h3>
+                            <div class="bg-blue-100 border border-blue-200 rounded p-4 text-center">
+                                Centered Container (max-width)
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">Grid System</h3>
+                            <div class="grid grid-cols-12 gap-2 mb-2">
+                                <div class="col-span-6 bg-blue-100 p-2 rounded text-center">Col 6</div>
+                                <div class="col-span-6 bg-blue-200 p-2 rounded text-center">Col 6</div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-2">
+                                <div class="col-span-4 bg-blue-100 p-2 rounded text-center">Col 4</div>
+                                <div class="col-span-4 bg-blue-200 p-2 rounded text-center">Col 4</div>
+                                <div class="col-span-4 bg-blue-300 p-2 rounded text-center">Col 4</div>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 text-sm">
+                            <pre><code>import { Container, Grid, Box } from '@mui/material';
+
+&lt;Container maxWidth="md"&gt;
+  &lt;Grid container spacing={2}&gt;
+    &lt;Grid item xs={12} sm={6}&gt;
+      &lt;Box p={2} bgcolor="primary.light"&gt;Item 1&lt;/Box&gt;
+    &lt;/Grid&gt;
+    &lt;Grid item xs={12} sm={6}&gt;
+      &lt;Box p={2} bgcolor="secondary.light"&gt;Item 2&lt;/Box&gt;
+    &lt;/Grid&gt;
+  &lt;/Grid&gt;
+&lt;/Container&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Input Components -->
+                    <div class="component-example">
+                        <h2 class="text-xl font-semibold text-primary mb-4">Input Components</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="font-medium mb-2">Buttons</h3>
+                                <div class="flex space-x-3">
+                                    <button class="bg-primary text-white px-4 py-2 rounded">Contained</button>
+                                    <button class="border border-primary text-primary px-4 py-2 rounded">Outlined</button>
+                                    <button class="text-primary px-4 py-2">Text</button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="font-medium mb-2">Text Field</h3>
+                                <div class="border border-gray-300 rounded p-2">
+                                    <input type="text" placeholder="Enter your name" class="w-full outline-none">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="font-medium mb-2">Select</h3>
+                                <div class="border border-gray-300 rounded p-2">
+                                    <select class="w-full outline-none bg-white">
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 text-sm">
+                                <pre><code>import { Button, TextField, Select, MenuItem } from '@mui/material';
+
+&lt;Button variant="contained"&gt;Submit&lt;/Button&gt;
+
+&lt;TextField label="Name" variant="outlined" /&gt;
+
+&lt;Select value={age} onChange={handleChange}&gt;
+  &lt;MenuItem value={10}&gt;Ten&lt;/MenuItem&gt;
+  &lt;MenuItem value={20}&gt;Twenty&lt;/MenuItem&gt;
+&lt;/Select&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Components -->
+                    <div class="component-example">
+                        <h2 class="text-xl font-semibold text-primary mb-4">Navigation</h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">App Bar</h3>
+                            <div class="bg-primary text-white p-4 rounded-t-lg flex justify-between items-center">
+                                <div class="font-bold">My Application</div>
+                                <div class="flex space-x-3">
+                                    <span>Home</span>
+                                    <span>About</span>
+                                    <span>Contact</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">Drawer</h3>
+                            <div class="flex">
+                                <div class="w-1/4 bg-gray-100 p-4 rounded-l-lg">
+                                    <div class="py-2 font-medium">Dashboard</div>
+                                    <div class="py-2 font-medium">Profile</div>
+                                    <div class="py-2 font-medium">Settings</div>
+                                </div>
+                                <div class="w-3/4 bg-white p-4 rounded-r-lg">
+                                    Main Content Area
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 text-sm">
+                            <pre><code>import { AppBar, Toolbar, Drawer, List, ListItem } from '@mui/material';
+
+// App Bar
+&lt;AppBar position="static"&gt;
+  &lt;Toolbar&gt;
+    &lt;Typography variant="h6"&gt;My App&lt;/Typography&gt;
+  &lt;/Toolbar&gt;
+&lt;/AppBar&gt;
+
+// Drawer
+&lt;Drawer variant="permanent"&gt;
+  &lt;List&gt;
+    &lt;ListItem button&gt;Dashboard&lt;/ListItem&gt;
+    &lt;ListItem button&gt;Profile&lt;/ListItem&gt;
+  &lt;/List&gt;
+&lt;/Drawer&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Display Components -->
+                    <div class="component-example">
+                        <h2 class="text-xl font-semibold text-primary mb-4">Data Display</h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">Typography</h3>
+                            <div class="space-y-2">
+                                <h1 class="text-2xl font-bold">Heading 1</h1>
+                                <h2 class="text-xl font-bold">Heading 2</h2>
+                                <p class="text-base">Body text - Lorem ipsum dolor sit amet</p>
+                                <p class="text-sm text-gray-600">Caption text</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-medium mb-2">Card</h3>
+                            <div class="border rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 h-32"></div>
+                                <div class="p-4">
+                                    <h4 class="font-bold text-lg mb-2">Card Title</h4>
+                                    <p class="text-gray-600 mb-4">This is an example card with supporting text.</p>
+                                    <button class="bg-primary text-white px-3 py-1 rounded">Action</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 text-sm">
+                            <pre><code>import { Typography, Card, CardContent, CardMedia } from '@mui/material';
+
+&lt;Card sx={{ maxWidth: 345 }}&gt;
+  &lt;CardMedia
+    component="img"
+    height="140"
+    image="/static/images/cards/contemplative-reptile.jpg"
+  /&gt;
+  &lt;CardContent&gt;
+    &lt;Typography gutterBottom variant="h5"&gt;Card Title&lt;/Typography&gt;
+    &lt;Typography variant="body2" color="text.secondary"&gt;
+      Card content description
+    &lt;/Typography&gt;
+  &lt;/CardContent&gt;
+&lt;/Card&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Lab -->
+        <div id="lab" class="slide">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <h1 class="text-3xl font-bold text-primary mb-6">Lab: Build a Navbar</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Objective</h2>
+                        <p class="mb-6">Build a responsive navigation bar with:</p>
+                        <ul class="list-disc pl-6 space-y-2 mb-6">
+                            <li>App bar with logo and title</li>
+                            <li>Navigation links</li>
+                            <li>Mobile menu with hamburger icon</li>
+                            <li>Responsive behavior</li>
+                        </ul>
+                        
+                        <h2 class="text-xl font-semibold mb-4">Steps</h2>
+                        <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                            <ol class="list-decimal pl-6 space-y-3">
+                                <li>Install Material UI and dependencies</li>
+                                <li>Set up theme and fonts</li>
+                                <li>Create AppBar component</li>
+                                <li>Add Toolbar with logo and title</li>
+                                <li>Create navigation links (use Box for spacing)</li>
+                                <li>Implement mobile menu with Drawer</li>
+                                <li>Add responsive behavior with useMediaQuery</li>
+                                <li>Style with theme colors</li>
+                            </ol>
+                        </div>
+                        
+                        <h2 class="text-xl font-semibold mb-4">Solution Preview</h2>
+                        <div class="border rounded-lg overflow-hidden">
+                            <div class="bg-primary text-white p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-white rounded mr-3"></div>
+                                    <span class="font-bold">MyApp</span>
+                                </div>
+                                <div class="hidden md:flex space-x-4">
+                                    <span>Home</span>
+                                    <span>About</span>
+                                    <span>Services</span>
+                                    <span>Contact</span>
+                                </div>
+                                <div class="md:hidden">
+                                    <i class="fas fa-bars"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Code Solution</h2>
+                        <div class="code-block bg-gray-800 text-gray-100 rounded-lg p-4 text-sm">
+                            <pre><code>import React, { useState } from 'react';
+import { 
+  AppBar, Toolbar, Typography, Box, 
+  IconButton, Drawer, List, ListItem 
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
+function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  
+  const navItems = ['Home', 'About', 'Services', 'Contact'];
+  
+  return (
+    &lt;&gt;
+      &lt;AppBar position="static"&gt;
+        &lt;Toolbar&gt;
+          &lt;Typography variant="h6" sx={{ flexGrow: 1 }}&gt;
+            MyApp
+          &lt;/Typography&gt;
+          &lt;Box sx={{ display: { xs: 'none', sm: 'block' } }}&gt;
+            {navItems.map((item) => (
+              &lt;Button key={item} color="inherit"&gt;{item}&lt;/Button&gt;
+            ))}
+          &lt;/Box&gt;
+          &lt;IconButton
+            color="inherit"
+            onClick={handleDrawerToggle}
+            sx={{ display: { sm: 'none' } }}
+          &gt;
+            &lt;MenuIcon /&gt;
+          &lt;/IconButton&gt;
+        &lt;/Toolbar&gt;
+      &lt;/AppBar&gt;
+      
+      &lt;Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+      &gt;
+        &lt;List&gt;
+          {navItems.map((item) => (
+            &lt;ListItem key={item}&gt;{item}&lt;/ListItem&gt;
+          ))}
+        &lt;/List&gt;
+      &lt;/Drawer&gt;
+    &lt;/&gt;
+  );
+}
+
+export default Navbar;</code></pre>
+                        </div>
+                        
+                        <div class="mt-6 bg-green-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-green-700 mb-2">
+                                <i class="fas fa-lightbulb mr-2"></i>Best Practices
+                            </h3>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Use ThemeProvider for consistent styling</li>
+                                <li>Break components into smaller reusable parts</li>
+                                <li>Use sx prop for responsive styles</li>
+                                <li>Implement accessibility features</li>
+                                <li>Separate concerns (create separate Navbar component)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 right-6 flex space-x-3">
+        <button id="prevBtn" class="bg-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button id="nextBtn" class="bg-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const slides = ['intro', 'comparison', 'setup', 'components', 'lab'];
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            // Hide all slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Show current slide
+            document.getElementById(slides[index]).classList.add('active');
+            currentSlide = index;
+        }
+        
+        // Navigation items
+        document.querySelectorAll('.nav-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Next/prev buttons
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            }
+        });
+        
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+        
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const codeBlock = e.target.closest('.code-block').querySelector('code');
+                const textArea = document.createElement('textarea');
+                textArea.value = codeBlock.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
