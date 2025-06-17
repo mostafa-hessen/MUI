@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل شامل لـ Material-UI مع React</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#e3f2fd',
+                            100: '#bbdefb',
+                            200: '#90caf9',
+                            300: '#64b5f6',
+                            400: '#42a5f5',
+                            500: '#2196f3',
+                            600: '#1e88e5',
+                            700: '#1976d2',
+                            800: '#1565c0',
+                            900: '#0d47a1',
+                        },
+                        secondary: {
+                            50: '#f3e5f5',
+                            100: '#e1bee7',
+                            200: '#ce93d8',
+                            300: '#ba68c8',
+                            400: '#ab47bc',
+                            500: '#9c27b0',
+                            600: '#8e24aa',
+                            700: '#7b1fa2',
+                            800: '#6a1b9a',
+                            900: '#4a148c',
+                        },
+                        dark: '#121826',
+                        light: '#f5f7fa'
+                    },
+                    fontFamily: {
+                        'tajawal': ['Tajawal', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'mui': '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+                        'mui-hover': '0px 5px 15px -3px rgba(0,0,0,0.2), 0px 8px 20px 1px rgba(0,0,0,0.14), 0px 3px 24px 2px rgba(0,0,0,0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #1976d2;
+            --secondary: #9c27b0;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            scroll-behavior: smooth;
+        }
+        
+        .mui-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .section {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .code-block {
+            direction: ltr;
+            text-align: left;
+            border-radius: 12px;
+        }
+        
+        .comparison-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background-color: rgba(25, 118, 210, 0.1);
+            font-weight: 700;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .component-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.06);
+        }
+        
+        .nav-item {
+            position: relative;
+            padding-bottom: 6px;
+        }
+        
+        .nav-item:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .nav-item:hover:after {
+            width: 100%;
+        }
+        
+        .install-step {
+            counter-increment: step-counter;
+            position: relative;
+            padding-right: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .install-step:before {
+            content: counter(step-counter);
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .mui-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .mui-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        }
+        
+        .mui-btn {
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .mui-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 18px;
+            z-index: -1;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+        
+        .wave .shape-fill {
+            fill: #FFFFFF;
+        }
+        
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(25, 118, 210, 0.1);
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.2s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen" style="counter-reset: step-counter;">
+    <!-- Progress bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+       <!-- Header -->
+    <header class="mui-gradient text-white relative pb-24">
+        <!-- <div class="wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+            </svg>
+        </div> -->
+        
+        <div class="container mx-auto px-4 pt-12 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-right mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">دليل شامل لـ Material-UI مع React</h1>
+                    <p class="text-xl md:text-2xl opacity-90 max-w-2xl text-gray-100">أحدث مكتبة واجهة مستخدم لبناء تطبيقات React احترافية بتصميم عصري</p>
+                    
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                        <a href="#installation" class="bg-white text-primary-700 px-6 py-3 rounded-lg font-bold shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-download mr-2"></i>ابدأ الآن
+                        </a>
+                        <a href="#what-is-mui" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-book mr-2"></i>تعرف أكثر
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4 text-sm">
+                        <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <i class="fab fa-react text-blue-400 mr-2"></i>الإصدار الحالي: v7
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <i class="fas fa-star text-yellow-400 mr-2"></i>75k+ نجمة على GitHub
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="logo-container mt-8 md:mt-0">
+                    <div class="logo-inner">
+                        <div class="logo-front bg-white rounded-2xl p-5 shadow-2xl floating relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-gradient-to-br from-primary-500 to-secondary-500 text-white text-sm font-bold px-3 py-1 rounded-bl-lg">v7</div>
+                            
+                            <div class="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-xl p-6 w-56 h-56 flex items-center justify-center">
+                                <div class="flex flex-col items-center">
+                                    <div class="text-6xl text-primary-500 mb-3 glow">
+                                        <i class="fab fa-react"></i>
+                                    </div>
+                                    <div class="text-4xl font-bold text-secondary-500 mb-4">+</div>
+                                    <div class="text-5xl text-secondary-500 glow">
+                                        <i class="fas fa-palette"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <div class="inline-block bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                                    Material-UI
+                                </div>
+                            </div>
+                        </div>
+                        
+                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-10 mt-[-40px]">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-4 py-3">
+                <a href="#what-is-mui" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">ما هي MUI؟</a>
+                <a href="#competitors" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">المنافسون</a>
+                <a href="#advantages" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">المميزات</a>
+                <a href="#vs-bootstrap-tailwind" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">مقارنة مع Bootstrap و Tailwind</a>
+                <a href="#installation" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">التثبيت</a>
+                <a href="#emotion-vs-styled" class="nav-item text-base md:text-lg font-medium px-4 py-2 hover:text-primary">Emotion vs Styled</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 mt-6">
+        <!-- Introduction -->
+        <section id="what-is-mui" class="section bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-primary-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-paint-brush text-3xl text-primary-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">ما هي Material-UI (MUI)؟</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed">
+                            <span class="font-bold text-primary-600">Material-UI</span> هي مكتبة مكونات واجهة مستخدم (UI Components) شائعة ومفتوحة المصدر مبنية على <span class="font-bold text-primary-600">React</span> وتتبع إرشادات تصميم Material Design من Google.
+                        </p>
+                        
+                        <div class="gradient-border p-6 mb-6">
+                            <h3 class="font-bold text-xl mb-4 text-primary-700">ما الذي تعتمد عليه MUI؟</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="bg-primary-100 rounded-full p-2 mr-3">
+                                        <i class="fab fa-react text-primary-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">React</h4>
+                                        <p class="text-gray-600">المكتبة الأساسية لبناء واجهات المستخدم</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="bg-purple-100 rounded-full p-2 mr-3">
+                                        <i class="fas fa-paint-roller text-secondary-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">Emotion/Styled Components</h4>
+                                        <p class="text-gray-600">لمكونات CSS-in-JS</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="bg-yellow-100 rounded-full p-2 mr-3">
+                                        <i class="fas fa-ruler-combined text-yellow-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">Material Design System</h4>
+                                        <p class="text-gray-600">نظام التصميم من Google</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col justify-center">
+                        <div class="relative h-64 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-6 flex items-center justify-center">
+                            <div class="absolute top-6 left-6 bg-white rounded-xl shadow-lg p-4 transform rotate-6 w-32">
+                                <div class="bg-primary-500 w-10 h-2 mb-2 rounded"></div>
+                                <div class="bg-primary-400 w-14 h-2 mb-2 rounded"></div>
+                                <div class="bg-primary-300 w-8 h-2 rounded"></div>
+                            </div>
+                            <div class="absolute bottom-6 right-6 bg-white rounded-xl shadow-lg p-4 transform -rotate-6 w-36">
+                                <div class="flex mb-2">
+                                    <div class="bg-secondary-500 w-4 h-4 rounded-full mr-2"></div>
+                                    <div class="bg-secondary-400 w-4 h-4 rounded-full mr-2"></div>
+                                    <div class="bg-secondary-300 w-4 h-4 rounded-full"></div>
+                                </div>
+                                <div class="bg-gray-200 w-16 h-2 rounded mb-1"></div>
+                                <div class="bg-gray-200 w-12 h-2 rounded"></div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-lg p-5 z-10">
+                                <div class="text-center text-primary-600 text-xl font-bold mb-2">MUI</div>
+                                <div class="flex justify-center">
+                                    <div class="bg-primary-500 rounded-lg w-10 h-10 mx-1"></div>
+                                    <div class="bg-secondary-500 rounded-lg w-10 h-10 mx-1"></div>
+                                    <div class="bg-primary-300 rounded-lg w-10 h-10 mx-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">
+                            أمثلة على مكونات MUI: أزرار، حقول إدخال، بطاقات، أشرطة تنقل
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitors -->
+        <section id="competitors" class="section mt-12 bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-purple-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-trophy text-3xl text-secondary-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">المنافسون والفروقات</h2>
+                </div>
+                
+                <div class="overflow-x-auto rounded-2xl shadow-md">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th class="w-1/4">المكتبة</th>
+                                <th>نقاط القوة</th>
+                                <th>نقاط الضعف</th>
+                                <th>أفضل استخدام</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-primary-50">
+                                <td class="font-bold text-primary-700">Material-UI</td>
+                                <td>تصميم جميل، وثائق ممتازة، مجتمع كبير، قابل للتخصيص</td>
+                                <td>حجم الحزمة كبير، منحنى تعلم متوسط</td>
+                                <td>تطبيقات المؤسسات، تطبيقات Material Design</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-blue-600">Ant Design</td>
+                                <td>مجموعة مكونات غنية، تصميم احترافي، دعم دولي ممتاز</td>
+                                <td>تخصيص أقل، ثقيلة الحجم</td>
+                                <td>لوحات التحكم، التطبيقات التجارية</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-green-600">Chakra UI</td>
+                                <td>سهولة الاستخدام، قابلية الوصول، قابلية للتكوين</td>
+                                <td>مكونات أقل، مجتمع أصغر</td>
+                                <td>تطبيقات الويب الحديثة، البدء السريع</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-purple-600">Bootstrap React</td>
+                                <td>شعبية كبيرة، معروفة جيداً، الكثير من القوالب</td>
+                                <td>مظهر عام، تخصيص محدود</td>
+                                <td>التطبيقات التقليدية، المشاريع الصغيرة</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="gradient-border p-6">
+                        <h3 class="font-bold text-xl mb-4 flex items-center text-primary-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-2xl"></i>
+                            متى تختار MUI؟
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>عندما تحتاج تطبيقًا بجودة احترافية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>عندما تريد تصميم Material Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span>عندما تحتاج إلى الكثير من المكونات الجاهزة</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gradient-border p-6">
+                        <h3 class="font-bold text-xl mb-4 flex items-center text-secondary-700">
+                            <i class="fas fa-times-circle text-red-500 mr-3 text-2xl"></i>
+                            متى تتجنب MUI؟
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                <span>عندما تحتاج تطبيقًا خفيفًا جدًا (حجم الحزمة)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                <span>عندما لا تريد تصميم Material Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                <span>عندما تعمل في مشروع صغير جدًا وسريع</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advantages -->
+        <section id="advantages" class="section mt-12 bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-star text-3xl text-yellow-500"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مميزات MUI ولماذا تتعلمها؟</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-primary-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-puzzle-piece text-primary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">مكونات غنية وجاهزة</h3>
+                                <p class="text-gray-600">تقدم MUI أكثر من 50 مكونًا جاهزًا للاستخدام مثل الأزرار، القوائم، الجداول، النماذج وغيرها.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-secondary-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-paint-brush text-secondary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">تخصيص سهل</h3>
+                                <p class="text-gray-600">نظام تيمات متكامل يتيح لك تغيير التصميم كليًا ببضعة أسطر فقط.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-green-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-book text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">وثائق ممتازة</h3>
+                                <p class="text-gray-600">توثيق شامل مع أمثلة تفاعلية لكل مكون، مما يجعل التعلم سهلاً.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-users text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">مجتمع كبير</h3>
+                                <p class="text-gray-600">مجتمع نشط على GitHub وStackOverflow، مع تحديثات مستمرة.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-red-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-mobile-alt text-red-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">استجابة كاملة</h3>
+                                <p class="text-gray-600">جميع المكونات مصممة لتكون متجاوبة مع جميع أحجام الشاشات.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">أداء عالي</h3>
+                                <p class="text-gray-600">مبنية باستخدام تقنيات حديثة لتحقيق أفضل أداء.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <h3 class="font-bold text-2xl mb-6 text-center">أمثلة على مكونات MUI</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="component-card">
+                            <div class="p-5">
+                                <div class="text-center mb-4">
+                                    <div class="text-xl font-bold text-primary-600">الأزرار</div>
+                                </div>
+                                <div class="flex flex-wrap justify-center gap-3">
+                                    <div class="bg-primary-500 text-white px-4 py-2 rounded-lg">أساسي</div>
+                                    <div class="border border-primary-500 text-primary-500 px-4 py-2 rounded-lg">ثانوي</div>
+                                    <div class="bg-secondary-500 text-white px-4 py-2 rounded-lg">نجاح</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="component-card">
+                            <div class="p-5">
+                                <div class="text-center mb-4">
+                                    <div class="text-xl font-bold text-primary-600">حقول الإدخال</div>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-user text-gray-400"></i>
+                                        </div>
+                                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full pl-10 p-2.5" placeholder="اسم المستخدم">
+                                    </div>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-lock text-gray-400"></i>
+                                        </div>
+                                        <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full pl-10 p-2.5" placeholder="كلمة المرور">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="component-card">
+                            <div class="p-5">
+                                <div class="text-center mb-4">
+                                    <div class="text-xl font-bold text-primary-600">البطاقات</div>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-24 mb-4"></div>
+                                    <div class="font-bold text-lg mb-2">عنوان البطاقة</div>
+                                    <p class="text-sm text-gray-600 mb-4">هذا مثال لمحتوى البطاقة في MUI مع تصميم حديث</p>
+                                    <div class="flex justify-between">
+                                        <button class="text-primary-500 font-medium">مشاركة</button>
+                                        <button class="text-secondary-500 font-medium">تفاصيل</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison with Bootstrap and Tailwind -->
+        <section id="vs-bootstrap-tailwind" class="section mt-12 bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-balance-scale text-3xl text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مقارنة مع Bootstrap و Tailwind CSS</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="gradient-border p-5">
+                        <div class="text-center mb-4">
+                            <div class="bg-gradient-to-br from-primary-500 to-primary-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-palette text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-primary-700">Material-UI</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>مكونات جاهزة متكاملة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>تصميم Material Design متسق</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                                <span>حجم أكبر للحزمة</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gradient-border p-5">
+                        <div class="text-center mb-4">
+                            <div class="bg-gradient-to-br from-purple-500 to-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fab fa-bootstrap text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-purple-700">Bootstrap</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>شعبية واسعة وقوالب كثيرة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                                <span>تصميم عام يبدو متشابهًا</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                                <span>تخصيص محدود نسبيًا</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gradient-border p-5">
+                        <div class="text-center mb-4">
+                            <div class="bg-gradient-to-br from-cyan-500 to-cyan-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-wind text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-cyan-700">Tailwind CSS</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>مرونة عالية في التصميم</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                                <span>لا توفر مكونات جاهزة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>حجم حزمة صغير بعد البناء</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-2xl p-8">
+                    <h3 class="font-bold text-2xl mb-6 text-center text-primary-800">ما الذي تختار لمشروعك؟</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-2xl p-6 shadow-md">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary-100 rounded-full p-2 mr-3">
+                                    <i class="fas fa-thumbs-up text-primary-600"></i>
+                                </div>
+                                <h4 class="font-bold text-xl text-primary-700">✅ اختر MUI عندما:</h4>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                    <span>تحتاج إلى تطوير سريع لمكونات معقدة</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                    <span>تريد تصميم Material Design متسق وجميل</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                    <span>تعمل في فريق ويحتاج إلى معايير تصميم موحدة</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-6 shadow-md">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-cyan-100 rounded-full p-2 mr-3">
+                                    <i class="fas fa-wind text-cyan-600"></i>
+                                </div>
+                                <h4 class="font-bold text-xl text-cyan-700">✅ اختر Tailwind/Bootstrap عندما:</h4>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-cyan-600 mt-1 mr-2"></i>
+                                    <span>تحتاج إلى تحكم كامل في التصميم</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-cyan-600 mt-1 mr-2"></i>
+                                    <span>تعمل على مشروع صغير وبسيط</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-cyan-600 mt-1 mr-2"></i>
+                                    <span>لديك بالفعل مكتبة مكونات خاصة بك</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl">
+                        <p class="font-bold text-white text-lg text-center">
+                            💡 النصيحة الاحترافية: يمكنك دمج MUI مع Tailwind! استخدم MUI للمكونات المعقدة (كالجداول والنماذج) واستخدم Tailwind للعناصر البسيطة والتخصيص الدقيق.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section id="installation" class="section mt-12 bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-green-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-download text-3xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">تثبيت MUI مع Emotion</h2>
+                </div>
+                
+                <div class="mb-10 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-2xl p-6">
+                    <h3 class="font-bold text-xl mb-4 flex items-center text-primary-700">
+                        <i class="fas fa-question-circle text-primary-600 mr-3"></i>
+                        لماذا Emotion؟
+                    </h3>
+                    <p class="mb-4 text-gray-700">Emotion هي مكتبة CSS-in-JS تتيح كتابة أنماط CSS داخل JavaScript. MUI تستخدمها بشكل افتراضي بدءًا من الإصدار 5.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-bold text-primary-600 mb-2">مميزات Emotion:</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>أداء أفضل من styled-components</li>
+                                <li>حجم حزمة أصغر</li>
+                                <li>دعم أفضل لخواص CSS الحديثة</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-bold text-secondary-600 mb-2">كيف تعمل؟</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>توليد أنماط ديناميكية</li>
+                                <li>تحسين أداء التطبيق</li>
+                                <li>تجنب تعارض الأسماء</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-2xl mb-6 text-center">خطوات التثبيت</h3>
+                    
+                    <div class="install-step">
+                        <h4 class="font-bold text-xl mb-3">1. إنشاء مشروع React جديد (إن لم يكن موجودًا)</h4>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">npx create-react-app my-app
+cd my-app</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="install-step">
+                        <h4 class="font-bold text-xl mb-3">2. تثبيت حزم MUI الأساسية</h4>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre>npm install @mui/material @emotion/react @emotion/styled</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="install-step">
+                        <h4 class="font-bold text-xl mb-3">3. تثبيت أيقونات MUI (اختياري)</h4>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre>npm install @mui/icons-material</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="install-step">
+                        <h4 class="font-bold text-xl mb-3">4. تهيئة Theme الأساسي (في App.js)</h4>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+
+// إنشاء تخصيص للتصميم
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#9c27b0',
+    },
+  },
+});
+
+function App() {
+  return (
+    &lt;ThemeProvider theme={theme}&gt;
+      &lt;Button variant="contained" color="primary"&gt;
+        زر MUI
+      &lt;/Button&gt;
+    &lt;/ThemeProvider&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emotion vs Styled -->
+        <section id="emotion-vs-styled" class="section mt-12 bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-code text-3xl text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">Emotion مقابل Styled Components</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-5 mb-6">
+                            <h3 class="font-bold text-xl mb-4 flex items-center text-primary-700">
+                                <i class="fab fa-react text-primary-600 mr-3"></i>
+                                Emotion
+                            </h3>
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-bold text-primary-600 mb-2">نقاط القوة:</h4>
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                    <li>حجم حزمة أصغر (حوالي 7KB مقابل 12KB)</li>
+                                    <li>أداء أفضل في بعض السيناريوهات</li>
+                                    <li>تركيب أسهل مع MUI</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">import { css } from '@emotion/react';
+import { styled } from '@mui/material/styles';
+
+// إنشاء مكون مخصص
+const CustomButton = styled(Button)`
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  border: 0;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+`;
+
+// استخدام أنماط مباشرة
+const styles = css`
+  background-color: hotpink;
+  &:hover {
+    color: white;
+  }
+`;</pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 mb-6">
+                            <h3 class="font-bold text-xl mb-4 flex items-center text-purple-700">
+                                <i class="fab fa-react text-purple-600 mr-3"></i>
+                                Styled Components
+                            </h3>
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-bold text-purple-600 mb-2">نقاط القوة:</h4>
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                    <li>مجتمع أكبر وشعبية أوسع</li>
+                                    <li>وثائق ممتازة وأمثلة كثيرة</li>
+                                    <li>أكثر نضجًا واستقرارًا</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">import styled from 'styled-components';
+
+const CustomButton = styled.button`
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  border: 0;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+`;
+
+// استخدام مع المكونات
+&lt;CustomButton&gt;زر مخصص&lt;/CustomButton&gt;</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl p-8">
+                    <h3 class="font-bold text-2xl mb-6 text-center text-white">ما الذي تختاره لمشروعك؟</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-xl shadow-lg">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-primary-100 rounded-full p-2 mr-3">
+                                    <i class="fas fa-check text-primary-600"></i>
+                                </div>
+                                <h4 class="font-bold text-lg text-primary-700">اختر Emotion عندما:</h4>
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>تستخدم MUI (فهي الخيار الافتراضي)</li>
+                                <li>تحتاج إلى حجم حزمة أصغر</li>
+                                <li>تريد أداءً أفضل في التطبيقات الكبيرة</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-xl shadow-lg">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-purple-100 rounded-full p-2 mr-3">
+                                    <i class="fas fa-check text-purple-600"></i>
+                                </div>
+                                <h4 class="font-bold text-lg text-purple-700">اختر Styled Components عندما:</h4>
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>تعمل في مشروع غير مرتبط بـ MUI</li>
+                                <li>تحتاج إلى مجتمع دعم كبير</li>
+                                <li>تستخدم خواص متقدمة في CSS-in-JS</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+           <!-- Progress bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="mui-gradient text-white relative">
+        <div class="container mx-auto px-4 pt-16 pb-24">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-right mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">دليل شامل لمكونات Material-UI</h1>
+                    <p class="text-xl md:text-2xl opacity-90 max-w-2xl">تعلم كيفية استخدام أهم مكونات MUI في تطبيقات React الخاصة بك</p>
+                    
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                        <a href="#typography" class="bg-white text-primary-700 px-6 py-3 rounded-lg font-bold shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
+                            ابدأ التعلم
+                        </a>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 -mt-16 rounded mt-5">
+        <!-- Navigation -->
+        <nav class="bg-white rounded-xl shadow-lg mb-12 p-4 sticky top-0 z-10">
+            <ul class="flex flex-wrap justify-center gap-4 md:gap-6 py-2">
+                <li class="nav-item"><a href="#typography" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Typography</a></li>
+                <li class="nav-item"><a href="#styling" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Styling</a></li>
+                <li class="nav-item"><a href="#system" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">System</a></li>
+                <li class="nav-item"><a href="#buttons" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Buttons</a></li>
+                <li class="nav-item"><a href="#data" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Data Display</a></li>
+                <li class="nav-item"><a href="#navigation" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Navigation</a></li>
+                <li class="nav-item"><a href="#layout" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Layout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Typography -->
+        <section id="typography" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-primary-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-text-height text-2xl text-primary-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">Typography - النصوص</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                            مكون Typography في MUI يستخدم لعرض النصوص بشكل منسق وجميل. يتضمن مجموعة متنوعة من الـvariants لتتناسب مع مختلف مستويات النصوص في التطبيق.
+                        </p>
+                        
+                        <div class="bg-gray-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-primary-700">الخصائص الرئيسية:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><span class="font-bold">variant:</span> تحدد نمط النص (h1, h2, subtitle1, body1, ...)</li>
+                                <li><span class="font-bold">align:</span> محاذاة النص (right, left, center, justify)</li>
+                                <li><span class="font-bold">color:</span> لون النص (primary, secondary, textPrimary, ...)</li>
+                                <li><span class="font-bold">sx:</span> خاصية للتخصيص المتقدم باستخدام نظام MUI</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center">
+                        <div class="mui-example">
+                            <div class="text-4xl font-bold mb-4">عنوان رئيسي (h1)</div>
+                            <div class="text-2xl font-semibold mb-3">عنوان ثانوي (h2)</div>
+                            <div class="text-xl text-gray-600 mb-3">نص فرعي (subtitle1)</div>
+                            <div class="mb-3">هذا نص عادي للجسم (body1)</div>
+                            <div class="text-sm text-gray-500">نص صغير للجسم (body2)</div>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">
+                            أمثلة على أنواع النصوص في MUI
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-4">كود الاستخدام:</h3>
+                    <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                        <pre class="text-sm">
+import Typography from '@mui/material/Typography';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Typography variant="h1"&gt;عنوان رئيسي&lt;/Typography&gt;
+      &lt;Typography variant="h2" color="primary"&gt;عنوان ثانوي&lt;/Typography&gt;
+      &lt;Typography variant="subtitle1" align="center"&gt;نص فرعي&lt;/Typography&gt;
+      &lt;Typography variant="body1" sx={{ fontWeight: 'bold' }}&gt;
+        نص عادي مع تخصيص
+      &lt;/Typography&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Styling -->
+        <section id="styling" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-secondary-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-paint-brush text-2xl text-secondary-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">التنسيق في MUI</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                            توفر MUI عدة طرق للتنسيق والتخصيص، بدءًا من CSS التقليدي وحتى نظام sx المتقدم.
+                        </p>
+                        
+                        <div class="bg-gray-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-secondary-700">طرق التنسيق:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><span class="font-bold">CSS التقليدي:</span> استخدام ملفات CSS/SCSS</li>
+                                <li><span class="font-bold">خاصية sx:</span> تخصيص مباشر باستخدام كائن JavaScript</li>
+                                <li><span class="font-bold">styled API:</span> إنشاء مكونات مخصصة باستخدام styled</li>
+                                <li><span class="font-bold">Theme:</span> تخصيص شامل باستخدام نظام الثيمات</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center">
+                        <div class="mui-example">
+                            <div class="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500">
+                                <div class="font-bold text-blue-800">CSS التقليدي</div>
+                                <div class="text-sm text-blue-600">.my-class &#123; color: blue; &#125;</div>
+                            </div>
+                            
+                            <div class="mb-4 p-4 bg-purple-50 border-l-4 border-purple-500">
+                                <div class="font-bold text-purple-800">خاصية sx</div>
+                                <div class="text-sm text-purple-600">sx=&#123;&#123; color: 'purple', fontSize: 20 &#125;&#125;</div>
+                            </div>
+                            
+                            <div class="p-4 bg-green-50 border-l-4 border-green-500">
+                                <div class="font-bold text-green-800">styled API</div>
+                                <div class="text-sm text-green-600">const MyButton = styled(Button)(&#123; ... &#125;);</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-4">مقارنة طرق التنسيق:</h3>
+                    <div class="overflow-x-auto rounded-xl shadow">
+                        <table class="w-full">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-3 text-right">الطريقة</th>
+                                    <th class="p-3 text-center">التعقيد</th>
+                                    <th class="p-3 text-center">الأداء</th>
+                                    <th class="p-3 text-center">المرونة</th>
+                                    <th class="p-3 text-left">أفضل استخدام</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-3 font-bold text-primary-700">CSS التقليدي</td>
+                                    <td class="p-3 text-center">منخفض</td>
+                                    <td class="p-3 text-center">ممتاز</td>
+                                    <td class="p-3 text-center">منخفضة</td>
+                                    <td class="p-3">تطبيقات بسيطة</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <td class="p-3 font-bold text-secondary-700">خاصية sx</td>
+                                    <td class="p-3 text-center">متوسط</td>
+                                    <td class="p-3 text-center">جيد</td>
+                                    <td class="p-3 text-center">عالية</td>
+                                    <td class="p-3">تخصيصات سريعة</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-green-700">styled API</td>
+                                    <td class="p-3 text-center">مرتفع</td>
+                                    <td class="p-3 text-center">جيد جداً</td>
+                                    <td class="p-3 text-center">عالية جداً</td>
+                                    <td class="p-3">مكونات مخصصة متكررة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Properties -->
+        <section id="system" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-purple-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-cogs text-2xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">System Properties</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        نظام الخصائص في MUI يوفر مجموعة من الأدوات للتنسيق السريع والفعال باستخدام خاصية sx. يمكنك التحكم في الهوامش، الحشو، الألوان، والمزيد بسهولة.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-xl mb-4 text-purple-700">أهم الخصائص:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-bold text-purple-600 mb-2">التخطيط</h4>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                                    <li>m, mt, mr, mb, ml, mx, my (margins)</li>
+                                    <li>p, pt, pr, pb, pl, px, py (paddings)</li>
+                                    <li>width, height, display</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-bold text-purple-600 mb-2">التصميم</h4>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                                    <li>color, bgcolor (background-color)</li>
+                                    <li>border, borderRadius</li>
+                                    <li>boxShadow</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-bold text-purple-600 mb-2">الطباعة</h4>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                                    <li>fontFamily, fontSize</li>
+                                    <li>fontWeight, fontStyle</li>
+                                    <li>textAlign, letterSpacing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">مثال على خاصية sx:</h3>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">
+&lt;Box
+  sx={{
+    p: 2,                    // padding: 16px
+    m: 1,                    // margin: 8px
+    bgcolor: 'primary.main', // background-color
+    color: 'white',
+    borderRadius: 2,         // 8px
+    boxShadow: 3,            // theme.shadows[3]
+    '&:hover': {
+      bgcolor: 'primary.dark',
+      boxShadow: 6,
+    }
+  }}
+&gt;
+  صندوق مع تخصيص متقدم
+&lt;/Box&gt;</pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">النتيجة:</h3>
+                        <div class="mui-example flex items-center justify-center h-full">
+                            <div class="bg-primary-500 text-white p-4 rounded-lg shadow-lg hover:bg-primary-700 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                                صندوق مع تخصيص متقدم
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section id="buttons" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-red-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-hand-pointer text-2xl text-red-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">Buttons - الأزرار</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        توفر MUI عدة أنواع من الأزرار لتلبية مختلف احتياجات التطبيق. الأزرار هي من أكثر المكونات استخدامًا في أي واجهة مستخدم.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-xl mb-4 text-red-700">أنواع الأزرار:</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Button</h4>
+                                <div class="flex flex-wrap gap-3">
+                                    <button class="bg-primary-500 text-white px-4 py-2 rounded">أساسي</button>
+                                    <button class="border border-primary-500 text-primary-500 px-4 py-2 rounded">ثانوي</button>
+                                    <button class="text-gray-700 px-4 py-2 rounded">نصي</button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">IconButton</h4>
+                                <div class="flex flex-wrap gap-3">
+                                    <button class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-heart text-red-500"></i>
+                                    </button>
+                                    <button class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-star text-yellow-500"></i>
+                                    </button>
+                                    <button class="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-share text-blue-500"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">TextField</h4>
+                                <div class="relative">
+                                    <input type="text" placeholder="ادخل النص هنا" class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <button class="absolute left-2 top-2 text-gray-500">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">كود Button:</h3>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Button variant="contained" color="primary"&gt;
+        أساسي
+      &lt;/Button&gt;
+      
+      &lt;IconButton color="secondary"&gt;
+        &lt;FavoriteIcon /&gt;
+      &lt;/IconButton&gt;
+      
+      &lt;TextField 
+        placeholder="ابحث..."
+        InputProps={{
+          startAdornment: (
+            &lt;InputAdornment position="start"&gt;
+              &lt;SearchIcon /&gt;
+            &lt;/InputAdornment&gt;
+          )
+        }}
+      /&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">الخصائص الشائعة:</h3>
+                        <ul class="list-disc list-inside space-y-3 text-gray-700">
+                            <li><span class="font-bold">variant:</span> contained | outlined | text</li>
+                            <li><span class="font-bold">color:</span> primary | secondary | success | error</li>
+                            <li><span class="font-bold">size:</span> small | medium | large</li>
+                            <li><span class="font-bold">disabled:</span> تعطيل الزر</li>
+                            <li><span class="font-bold">startIcon/endIcon:</span> إضافة أيقونات</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Display -->
+        <section id="data" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-green-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-table text-2xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">عرض البيانات</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        توفر MUI مجموعة من المكونات لعرض البيانات مثل الصور، القوائم، الشارات، والفاصل البصري.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-green-700">Avatar و Badge</h4>
+                                <div class="flex items-center space-x-4 mb-6">
+                                    <div class="relative">
+                                        <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-2xl">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="absolute bottom-0 right-0 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="font-bold">محمد أحمد</div>
+                                        <div class="text-sm text-gray-600">مستخدم جديد</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-green-700">List و Divider</h4>
+                                <div class="border rounded-lg overflow-hidden">
+                                    <div class="p-3 bg-gray-100 border-b">عنصر القائمة 1</div>
+                                    <div class="p-3">عنصر القائمة 2</div>
+                                    <div class="h-px bg-gray-200"></div>
+                                    <div class="p-3">عنصر القائمة 3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">كود Avatar و Badge:</h3>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">
+import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Badge badgeContent={3} color="error"&gt;
+        &lt;Avatar alt="محمد أحمد" src="/path/to/image.jpg" /&gt;
+      &lt;/Badge&gt;
+      
+      &lt;List&gt;
+        &lt;ListItem&gt;عنصر القائمة 1&lt;/ListItem&gt;
+        &lt;ListItem&gt;عنصر القائمة 2&lt;/ListItem&gt;
+        &lt;Divider /&gt;
+        &lt;ListItem&gt;عنصر القائمة 3&lt;/ListItem&gt;
+      &lt;/List&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">الخصائص الشائعة:</h3>
+                        <ul class="list-disc list-inside space-y-3 text-gray-700">
+                            <li><span class="font-bold">Avatar:</span> src, alt, variant (circular, rounded, square)</li>
+                            <li><span class="font-bold">Badge:</span> badgeContent, color, overlap, anchorOrigin</li>
+                            <li><span class="font-bold">List:</span> dense, disablePadding</li>
+                            <li><span class="font-bold">Divider:</span> variant (fullWidth, middle), orientation (vertical, horizontal)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section id="navigation" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-bars text-2xl text-blue-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مكونات التنقل</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        تساعد مكونات التنقل المستخدمين على التحرك بين أجزاء التطبيق المختلفة بسهولة.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-blue-700">AppBar</h4>
+                                <div class="bg-primary-600 text-white p-4 rounded-t-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="font-bold">تطبيق MUI</div>
+                                        <div class="flex space-x-2">
+                                            <button class="text-white"><i class="fas fa-search"></i></button>
+                                            <button class="text-white"><i class="fas fa-bell"></i></button>
+                                            <button class="text-white"><i class="fas fa-user"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-4 rounded-b-lg border border-t-0">
+                                    محتوى التطبيق
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-blue-700">Drawer</h4>
+                                <div class="flex">
+                                    <div class="bg-gray-800 text-white w-1/3 h-48 rounded-l-lg p-4">
+                                        <div class="mb-4">القائمة 1</div>
+                                        <div class="mb-4">القائمة 2</div>
+                                        <div class="mb-4">القائمة 3</div>
+                                    </div>
+                                    <div class="bg-white w-2/3 h-48 rounded-r-lg border p-4">
+                                        محتوى رئيسي
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">كود AppBar و Drawer:</h3>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;AppBar position="static"&gt;
+        &lt;Toolbar&gt;
+          &lt;Typography variant="h6"&gt;تطبيق MUI&lt;/Typography&gt;
+        &lt;/Toolbar&gt;
+      &lt;/AppBar&gt;
+      
+      &lt;Drawer variant="permanent" anchor="left"&gt;
+        &lt;List&gt;
+          &lt;ListItem button&gt;القائمة 1&lt;/ListItem&gt;
+          &lt;ListItem button&gt;القائمة 2&lt;/ListItem&gt;
+          &lt;ListItem button&gt;القائمة 3&lt;/ListItem&gt;
+        &lt;/List&gt;
+      &lt;/Drawer&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">Link - الروابط</h3>
+                        <div class="mui-example p-4">
+                            <div class="mb-4">
+                                <a href="#" class="text-primary-600 hover:underline">رابط عادي</a>
+                            </div>
+                            <div>
+                                <a href="#" class="text-secondary-600 font-bold hover:underline">رابط مميز</a>
+                            </div>
+                        </div>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto mt-4">
+                            <pre class="text-sm">
+import Link from '@mui/material/Link';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Link href="#"&gt;رابط عادي&lt;/Link&gt;
+      &lt;Link href="#" color="secondary" fontWeight="bold"&gt;
+        رابط مميز
+      &lt;/Link&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout -->
+        <section id="layout" class="section bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-th-large text-2xl text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مكونات التخطيط</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        تساعد مكونات التخطيط في تنظيم وترتيب المحتوى بطريقة منسقة وجذابة.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-indigo-700">Card</h4>
+                                <div class="bg-white border rounded-lg overflow-hidden shadow">
+                                    <div class="h-24 bg-primary-500"></div>
+                                    <div class="p-4">
+                                        <div class="font-bold mb-2">بطاقة MUI</div>
+                                        <p class="text-sm text-gray-600">هذا مثال لمحتوى البطاقة في MUI</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-indigo-700">Paper</h4>
+                                <div class="bg-white border rounded-lg p-4 shadow">
+                                    <div class="font-bold mb-2">ورقة MUI</div>
+                                    <p class="text-sm text-gray-600">هذا مثال لمحتوى الورقة في MUI</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-indigo-700">Container</h4>
+                                <div class="bg-white border rounded-lg p-4 shadow">
+                                    <div class="text-center">
+                                        <div class="font-bold">Container</div>
+                                        <div class="text-sm text-gray-600">يحدد عرض المحتوى</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">Box و Grid</h3>
+                        <div class="mui-example p-4">
+                            <div class="grid grid-cols-3 gap-4 mb-4">
+                                <div class="bg-primary-100 h-12 rounded flex items-center justify-center">1</div>
+                                <div class="bg-primary-200 h-12 rounded flex items-center justify-center">2</div>
+                                <div class="bg-primary-300 h-12 rounded flex items-center justify-center">3</div>
+                            </div>
+                            
+                            <div class="flex space-x-4">
+                                <div class="bg-secondary-100 flex-1 h-12 rounded flex items-center justify-center">Box 1</div>
+                                <div class="bg-secondary-200 flex-1 h-12 rounded flex items-center justify-center">Box 2</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">كود Box و Grid:</h3>
+                        <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                            <pre class="text-sm">
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Card from '@mui/material/Card';
+
+function App() {
+  return (
+    &lt;Container maxWidth="md"&gt;
+      &lt;Grid container spacing={2}&gt;
+        &lt;Grid item xs={4}&gt;
+          &lt;Paper elevation={3}&gt;محتوى 1&lt;/Paper&gt;
+        &lt;/Grid&gt;
+        &lt;Grid item xs={4}&gt;
+          &lt;Paper elevation={3}&gt;محتوى 2&lt;/Paper&gt;
+        &lt;/Grid&gt;
+        &lt;Grid item xs={4}&gt;
+          &lt;Card&gt;
+            &lt;CardContent&gt;بطاقة&lt;/CardContent&gt;
+          &lt;/Card&gt;
+        &lt;/Grid&gt;
+      &lt;/Grid&gt;
+      
+      &lt;Box sx={{ display: 'flex', mt: 2 }}&gt;
+        &lt;Box sx={{ flexGrow: 1, bgcolor: 'primary.main' }}&gt;Box 1&lt;/Box&gt;
+        &lt;Box sx={{ flexGrow: 1, bgcolor: 'secondary.main' }}&gt;Box 2&lt;/Box&gt;
+      &lt;/Box&gt;
+    &lt;/Container&gt;
+  );
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="mui-gradient text-white relative">
+        <div class="container mx-auto px-4 pt-16 pb-24">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-right mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">مكونات التخطيط في MUI</h1>
+                    <p class="text-xl md:text-2xl opacity-90 max-w-2xl">شرح مفصل لمكونات Stack، Box و Container مع أمثلة عملية</p>
+                    
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                        <a href="#box" class="bg-white text-primary-700 px-6 py-3 rounded-lg font-bold shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
+                            ابدأ التعلم
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mt-8 md:mt-0">
+                    <div class="bg-white rounded-2xl p-5 shadow-2xl floating relative overflow-hidden">
+                        <div class="flex flex-col items-center">
+                            <div class="text-6xl text-primary-500 mb-3">
+                                <i class="fas fa-th"></i>
+                            </div>
+                            <div class="text-4xl font-bold text-secondary-500 mb-4">+</div>
+                            <div class="text-5xl text-secondary-500">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="inline-block bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                                Layout Components
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 -mt-16">
+        <!-- Navigation -->
+        <nav class="bg-white rounded-xl shadow-lg mb-12 p-4 sticky top-0 z-10">
+            <ul class="flex flex-wrap justify-center gap-4 md:gap-6 py-2">
+                <li class="nav-item"><a href="#box" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Box</a></li>
+                <li class="nav-item"><a href="#container" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Container</a></li>
+                <li class="nav-item"><a href="#stack" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">Stack</a></li>
+                <li class="nav-item"><a href="#comparison" class="text-base md:text-lg font-medium px-3 py-1 hover:text-primary">مقارنة</a></li>
+            </ul>
+        </nav>
+
+        <!-- Box Component -->
+        <section id="box" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-primary-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-square text-2xl text-primary-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مكون Box - الحاوية المتعددة الاستخدامات</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                            مكون Box في MUI يعتبر حاوية متعددة الاستخدامات تعمل كعنصر غلاف لتطبيق التصميمات. يعمل كبديل لعناصر div مع إضافة خاصية sx للتخصيص السهل.
+                        </p>
+                        
+                        <div class="bg-gray-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-primary-700">الاستخدامات الرئيسية:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>حاوية لتطبيق الأنماط باستخدام خاصية sx</li>
+                                <li>بديل لـ div مع دعم نظام خاصية sx</li>
+                                <li>تجميع العناصر وتطبيق التصميمات المشتركة</li>
+                                <li>إنشاء تخطيطات بسيطة بدون استخدام CSS</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-xl p-5">
+                            <h3 class="font-bold text-lg mb-3 text-blue-700">مزايا استخدام Box:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>سهولة التخصيص مباشرة في الكود</li>
+                                <li>دعم كامل لنظام التصميم في MUI</li>
+                                <li>مرونة في تطبيق التصميمات</li>
+                                <li>بديل بسيط للعناصر div العادية</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center">
+                        <h3 class="font-bold text-lg mb-4 text-center">أمثلة عملية:</h3>
+                        
+                        <div class="mui-example space-y-4">
+                            <div class="p-4 bg-blue-100 border border-blue-300 rounded">
+                                <div class="font-bold mb-2">صندوق بسيط:</div>
+                                <div class="p-3 bg-blue-500 text-white rounded text-center">محتوى Box</div>
+                            </div>
+                            
+                            <div class="p-4 bg-blue-100 border border-blue-300 rounded">
+                                <div class="font-bold mb-2">صندوق مع تخطيط مرن:</div>
+                                <div class="flex space-x-2">
+                                    <div class="flex-1 p-3 bg-blue-500 text-white rounded text-center">1</div>
+                                    <div class="flex-1 p-3 bg-blue-600 text-white rounded text-center">2</div>
+                                    <div class="flex-1 p-3 bg-blue-700 text-white rounded text-center">3</div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-blue-100 border border-blue-300 rounded">
+                                <div class="font-bold mb-2">صندوق مع ظل وتدرج:</div>
+                                <div class="p-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-lg text-center">
+                                    Box مع تدرج ألوان
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-4">كود الاستخدام:</h3>
+                    <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                        <pre class="text-sm">
+import Box from '@mui/material/Box';
+
+function App() {
+  return (
+    &lt;Box 
+      sx={{
+        p: 2, // padding: 16px
+        m: 1, // margin: 8px
+        bgcolor: 'primary.main',
+        color: 'white',
+        borderRadius: 1, // 4px
+        boxShadow: 3,
+        '&:hover': {
+          bgcolor: 'primary.dark',
+          boxShadow: 6,
+        }
+      }}
+    &gt;
+      محتوى الصندوق
+    &lt;/Box&gt;
+    
+    // صندوق مع تخطيط مرن
+    &lt;Box sx={{ display: 'flex', gap: 2, mt: 2 }}&gt;
+      &lt;Box sx={{ flex: 1, bgcolor: 'primary.main', p: 2 }}&gt;عنصر 1&lt;/Box&gt;
+      &lt;Box sx={{ flex: 1, bgcolor: 'secondary.main', p: 2 }}&gt;عنصر 2&lt;/Box&gt;
+    &lt;/Box&gt;
+  );
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Container Component -->
+        <section id="container" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-green-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-border-all text-2xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مكون Container - الحاوية المنظمة</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                            مكون Container يوفر حاوية مركزة تتحكم في عرض المحتوى بشكل متجاوب مع أحجام الشاشات المختلفة. يعمل على تنظيم المحتوى بشكل احترافي.
+                        </p>
+                        
+                        <div class="bg-gray-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-green-700">خصائص أساسية:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><span class="font-bold">maxWidth:</span> يحدد أقصى عرض للحاوية (xs, sm, md, lg, xl)</li>
+                                <li><span class="font-bold">fixed:</span> يثبت عرض الحاوية بدلاً من التجاوب</li>
+                                <li><span class="font-bold">disableGutters:</span> يزيل الهوامش الجانبية</li>
+                                <li>يدعم خاصية sx للتخصيص الإضافي</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-xl p-5">
+                            <h3 class="font-bold text-lg mb-3 text-green-700">متى تستخدم Container؟</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>عندما تحتاج إلى محتوى مركزي في الصفحة</li>
+                                <li>لإنشاء تخطيط متجاوب يتحجم مع الشاشة</li>
+                                <li>عندما تريد هوامش جانبية متسقة</li>
+                                <li>لتنظيم المحتوى الرئيسي للتطبيق</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center">
+                        <h3 class="font-bold text-lg mb-4 text-center">أمثلة عملية:</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="font-bold mb-2 text-green-700">حاوية بعرض كامل (fluid):</div>
+                                <div class="border-2 border-green-500 rounded p-1">
+                                    <div class="bg-green-100 p-4 text-center">محتوى الحاوية</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="font-bold mb-2 text-green-700">حاوية متوسطة (md):</div>
+                                <div class="border-2 border-green-500 rounded p-1">
+                                    <div class="bg-green-100 p-4 text-center mx-auto" style="max-width: 960px;">محتوى الحاوية</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="font-bold mb-2 text-green-700">حاوية صغيرة (sm):</div>
+                                <div class="border-2 border-green-500 rounded p-1">
+                                    <div class="bg-green-100 p-4 text-center mx-auto" style="max-width: 600px;">محتوى الحاوية</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-4">كود الاستخدام:</h3>
+                    <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                        <pre class="text-sm">
+import Container from '@mui/material/Container';
+
+function App() {
+  return (
+    // حاوية متوسطة مع هوامش
+    &lt;Container maxWidth="md"&gt;
+      &lt;Box sx={{ bgcolor: 'primary.main', color: 'white', p: 2 }}&gt;
+        محتوى في حاوية متوسطة
+      &lt;/Box&gt;
+    &lt;/Container&gt;
+    
+    // حاوية بعرض كامل بدون هوامش
+    &lt;Container maxWidth={false} disableGutters&gt;
+      &lt;Box sx={{ bgcolor: 'secondary.main', color: 'white', p: 2 }}&gt;
+        محتوى في حاوية كاملة العرض
+      &lt;/Box&gt;
+    &lt;/Container&gt;
+    
+    // حاوية ثابتة (غير متجاوبة)
+    &lt;Container fixed&gt;
+      &lt;Box sx={{ bgcolor: 'warning.main', p: 2 }}&gt;
+        محتوى في حاوية ثابتة
+      &lt;/Box&gt;
+    &lt;/Container&gt;
+  );
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stack Component -->
+        <section id="stack" class="section bg-white mui-card mb-12">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-purple-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-layer-group text-2xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مكون Stack - الترتيب الذكي</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                            مكون Stack يوفر طريقة سهلة لترتيب العناصر في اتجاه واحد (عمودي أو أفقي) مع التحكم في المسافات بينها. هو بديل ممتاز لاستخدام CSS Flexbox مباشرة.
+                        </p>
+                        
+                        <div class="bg-gray-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-purple-700">الخصائص الرئيسية:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><span class="font-bold">direction:</span> اتجاه الترتيب (row, column, row-reverse, column-reverse)</li>
+                                <li><span class="font-bold">spacing:</span> المسافة بين العناصر (بالنقاط 1 = 8px)</li>
+                                <li><span class="font-bold">divider:</span> إضافة فاصل بين العناصر</li>
+                                <li><span class="font-bold">justifyContent:</span> محاذاة العناصر على المحور الرئيسي</li>
+                                <li><span class="font-bold">alignItems:</span> محاذاة العناصر على المحور الثانوي</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-purple-50 rounded-xl p-5">
+                            <h3 class="font-bold text-lg mb-3 text-purple-700">مزايا استخدام Stack:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>بديل سهل لـ Flexbox</li>
+                                <li>تحكم دقيق في المسافات بين العناصر</li>
+                                <li>دعم للاتجاهات المختلفة بسهولة</li>
+                                <li>إمكانية إضافة فواصل بين العناصر</li>
+                                <li>تكامل سلس مع مكونات MUI الأخرى</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center">
+                        <h3 class="font-bold text-lg mb-4 text-center">أمثلة عملية:</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="font-bold mb-2 text-purple-700">Stack عمودي:</div>
+                                <div class="flex flex-col space-y-4">
+                                    <div class="layout-box">عنصر 1</div>
+                                    <div class="layout-box">عنصر 2</div>
+                                    <div class="layout-box">عنصر 3</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="font-bold mb-2 text-purple-700">Stack أفقي:</div>
+                                <div class="flex space-x-4">
+                                    <div class="layout-box">عنصر 1</div>
+                                    <div class="layout-box">عنصر 2</div>
+                                    <div class="layout-box">عنصر 3</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="font-bold mb-2 text-purple-700">Stack مع فواصل:</div>
+                                <div class="flex flex-col space-y-4">
+                                    <div class="layout-box">عنصر 1</div>
+                                    <div class="h-px bg-gray-300 w-full"></div>
+                                    <div class="layout-box">عنصر 2</div>
+                                    <div class="h-px bg-gray-300 w-full"></div>
+                                    <div class="layout-box">عنصر 3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-4">كود الاستخدام:</h3>
+                    <div class="code-block bg-gray-800 text-green-400 p-4 rounded-xl overflow-x-auto">
+                        <pre class="text-sm">
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+
+function App() {
+  return (
+    // Stack عمودي مع مسافات
+    &lt;Stack direction="column" spacing={2}&gt;
+      &lt;Box sx={{ bgcolor: 'primary.main', p: 2 }}&gt;عنصر 1&lt;/Box&gt;
+      &lt;Box sx={{ bgcolor: 'primary.main', p: 2 }}&gt;عنصر 2&lt;/Box&gt;
+      &lt;Box sx={{ bgcolor: 'primary.main', p: 2 }}&gt;عنصر 3&lt;/Box&gt;
+    &lt;/Stack&gt;
+    
+    // Stack أفقي مع محاذاة مركزية
+    &lt;Stack direction="row" spacing={3} justifyContent="center" alignItems="center"&gt;
+      &lt;Box sx={{ bgcolor: 'secondary.main', p: 2 }}&gt;عنصر أ&lt;/Box&gt;
+      &lt;Box sx={{ bgcolor: 'secondary.main', p: 2 }}&gt;عنصر ب&lt;/Box&gt;
+      &lt;Box sx={{ bgcolor: 'secondary.main', p: 2 }}&gt;عنصر ج&lt;/Box&gt;
+    &lt;/Stack&gt;
+    
+    // Stack عمودي مع فواصل
+    &lt;Stack direction="column" divider={&lt;Divider orientation="horizontal" flexItem /&gt;}&gt;
+      &lt;Box sx={{ p: 2 }}&gt;قسم 1&lt;/Box&gt;
+      &lt;Box sx={{ p: 2 }}&gt;قسم 2&lt;/Box&gt;
+      &lt;Box sx={{ p: 2 }}&gt;قسم 3&lt;/Box&gt;
+    &lt;/Stack&gt;
+  );
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison -->
+        <section id="comparison" class="section bg-white mui-card">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-balance-scale text-2xl text-yellow-600"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">مقارنة بين مكونات التخطيط</h2>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-700">
+                        كل مكون من مكونات التخطيط في MUI له استخداماته المحددة. الفهم الجيد للفروقات بينهم يساعد في اختيار المكون المناسب لكل موقف.
+                    </p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/5">المكون</th>
+                                    <th>الغرض الأساسي</th>
+                                    <th>مزايا رئيسية</th>
+                                    <th>متى تستخدم</th>
+                                    <th>متى تتجنب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-bold text-primary-700">Box</td>
+                                    <td>حاوية متعددة الاستخدامات لتطبيق التصميمات</td>
+                                    <td>مرنة، تدعم sx، بديل لـ div</td>
+                                    <td>لتطبيق أنماط على مجموعة عناصر</td>
+                                    <td>عند الحاجة لتخطيط معقد</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-green-700">Container</td>
+                                    <td>تنظيم عرض المحتوى وتحديد أقصى عرض</td>
+                                    <td>تجاوبي، يتحكم في الهوامش، أحجام محددة</td>
+                                    <td>للمحتوى الرئيسي في الصفحة</td>
+                                    <td>للمكونات الصغيرة داخل الصفحة</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-purple-700">Stack</td>
+                                    <td>ترتيب العناصر في اتجاه واحد</td>
+                                    <td>سهولة التحكم في المسافات، اتجاهات متعددة</td>
+                                    <td>لترتيب مجموعة عناصر في صف أو عمود</td>
+                                    <td>عند الحاجة لتخطيط ثنائي الأبعاد</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-8">
+                    <h3 class="font-bold text-2xl mb-6 text-center text-yellow-800">كيفية اختيار المكون المناسب</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <div class="text-center mb-4">
+                                <div class="bg-primary-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-square text-primary-600"></i>
+                                </div>
+                                <h4 class="font-bold text-lg text-primary-700">استخدم Box عندما:</h4>
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>تحتاج إلى تطبيق أنماط CSS على مجموعة عناصر</li>
+                                <li>تريد بديلاً لـ div مع دعم خاصية sx</li>
+                                <li>تحتاج إلى حاوية بسيطة بدون سلوك معقد</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <div class="text-center mb-4">
+                                <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-border-all text-green-600"></i>
+                                </div>
+                                <h4 class="font-bold text-lg text-green-700">استخدم Container عندما:</h4>
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>تريد تنظيم المحتوى الرئيسي في الصفحة</li>
+                                <li>تحتاج إلى تحديد أقصى عرض للمحتوى</li>
+                                <li>تريد هوامش جانبية متسقة على مختلف الشاشات</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <div class="text-center mb-4">
+                                <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-layer-group text-purple-600"></i>
+                                </div>
+                                <h4 class="font-bold text-lg text-purple-700">استخدم Stack عندما:</h4>
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>تحتاج إلى ترتيب عناصر في صف أو عمود</li>
+                                <li>تريد التحكم في المسافات بين العناصر</li>
+                                <li>تحتاج إلى إضافة فواصل بين العناصر</li>
+                                <li>تريد بديلاً سهلًا لـ Flexbox</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl">
+                        <p class="font-bold text-white text-lg text-center">
+                            💡 النصيحة الاحترافية: يمكنك دمج هذه المكونات معًا! استخدم Container للهيكل العام، Stack لترتيب العناصر، و Box لتطبيق التصميمات التفصيلية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    </div>
+
+    </div>
+
+    <!-- Footer
+    <footer class="bg-gradient-to-r from-primary-800 to-secondary-800 text-white py-12 mt-16 relative">
+        <div class="wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center">
+                <h3 class="text-3xl font-bold mb-6">خلاصة حول MUI مع React</h3>
+                <p class="max-w-3xl mx-auto mb-8 text-lg">
+                    MUI هي مكتبة قوية ومتكاملة لبناء واجهات مستخدم احترافية باستخدام React. 
+                    توفر مجموعة شاملة من المكونات الجاهزة التي تتبع مبادئ Material Design، 
+                    مع قابلية تخصيص عالية وأداء ممتاز. 
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#" class="mui-btn bg-white text-primary-700 px-6 py-3 rounded-lg font-bold hover:bg-gray-100">
+                        ابدأ مع MUI
+                    </a>
+                    <a href="#" class="mui-btn bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-bold">
+                        تصفح الوثائق
+                    </a>
+                    <a href="#" class="mui-btn bg-secondary-600 hover:bg-secondary-700 text-white px-6 py-3 rounded-lg font-bold">
+                        شاهد الأمثلة
+                    </a>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-primary-200">
+                <p>تم تصميم هذا الدليل التعليمي باستخدام Tailwind CSS - &copy; 2023</p>
+            </div>
+        </div>
+    </footer> -->
+    
+    <script>
+        // Progress bar
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        };
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add animation to sections when they come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
